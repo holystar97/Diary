@@ -29,6 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.2"
+            android:layout_marginLeft="10dp"
             android:textSize="20sp"
             android:text="Name" />
 
@@ -55,6 +56,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.2"
+            android:layout_marginLeft="10dp"
             android:textSize="20sp"
             android:text="Birth" />
 
@@ -85,6 +87,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:layout_marginLeft="30dp"
+
         android:text="비밀번호찾기"
         android:textSize="30sp" />
 
@@ -102,6 +105,7 @@
             android:layout_weight="0.2"
             android:layout_marginRight="45dp"
             android:textSize="20sp"
+            android:layout_marginLeft="10dp"
             android:text="ID" />
 
         <EditText
@@ -129,6 +133,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.2"
             android:textSize="20sp"
+            android:layout_marginLeft="10dp"
             android:text="Email" />
 
         <EditText
@@ -142,7 +147,7 @@
             />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/Codebutton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
@@ -153,6 +158,7 @@
 
 
     <LinearLayout
+        android:id="@+id/showlayout"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_weight="0"
@@ -179,7 +185,7 @@
             />
 
         <Button
-            android:id="@+id/button3"
+            android:id="@+id/CodeCheck"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
