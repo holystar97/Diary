@@ -76,7 +76,7 @@
             android:layout_weight="1"
             android:layout_marginRight="115dp"
             android:ems="10"
-            android:inputType="textPersonName"
+            android:inputType="textPassword"
             />
 
 
