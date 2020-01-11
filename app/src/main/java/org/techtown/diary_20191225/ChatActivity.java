@@ -10,6 +10,7 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.StrictMode;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -22,11 +23,13 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.NetworkInterface;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.nio.channels.ServerSocketChannel;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -90,6 +93,8 @@ public class ChatActivity extends Activity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
 
         serverCreateButton = (Button) findViewById(R.id.server_create_button);
         serverTransButton = (Button) findViewById(R.id.trans_server_button);
@@ -131,9 +136,10 @@ public class ChatActivity extends Activity implements View.OnClickListener {
             break;
             case R.id.trans_client_button: {
                 String msg = nickName + ":" + transClientText.getText() + "\n";
-//                clientMsgBuilder.append(msg);
-//                clientText.setText(clientMsgBuilder.toString());
+                clientMsgBuilder.append(msg);
+                clientText.setText(clientMsgBuilder.toString());
                 try {
+
                     clientOut.writeUTF(msg);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -146,7 +152,7 @@ public class ChatActivity extends Activity implements View.OnClickListener {
     }
 
     public String getLocalIpAddress() {
-        WifiManager wifiMgr = (WifiManager) getSystemService(WIFI_SERVICE);
+        WifiManager wifiMgr = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
         WifiInfo wifiInfo = wifiMgr.getConnectionInfo();
         int ip = wifiInfo.getIpAddress();
         String ipAddress = String.format("%d.%d.%d.%d"
@@ -196,6 +202,10 @@ public class ChatActivity extends Activity implements View.OnClickListener {
         Collections.synchronizedMap(clientsMap);
         try {
             serverSocket = new ServerSocket(7777);
+//            ServerSocketChannel serverSocketChannel =ServerSocketChannel.open();
+//            serverSocketChannel.configureBlocking(true);
+//            serverSocketChannel.bind(new InetSocketAddress(7777));
+//            socket.bind(new InetSocketAddress(socket.getInetAddress(),7777));
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -207,6 +217,7 @@ public class ChatActivity extends Activity implements View.OnClickListener {
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
+                        Log.v("","서버 접속 되었나요 ?");
                         Log.v("", socket.getInetAddress() + "에서 접속했습니다.");
                         msg = socket.getInetAddress() + "에서 접속했습니다.\n";
                         handler.sendEmptyMessage(SERVER_TEXT_UPDATE);
